@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Compressor</title>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+<style>
+:root {
+    --bg-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+    --text-color: #fff;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #121212;
+    color: var(--text-color);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.grid-item {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    max-width: 500px;
+    width: calc(100% - 40px);
+}
+
+input[type="file"], .button, .slider {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    width: 90%;
+}
+
+.slider {
+    background: var(--bg-color);
+}
+
+.button {
+    background: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.download-link {
+    display: none;
+    margin-top: 20px;
+    text-decoration: none;
+    color: var(--text-color);
+    background: var(--bg-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.download-link:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+label {
+    font-size: 16px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="grid-item">
+        <label for="fileInput">Upload your file:</label>
+        <input type="file" id="fileInput" accept=".jpg, .jpeg, .gif, .mp3">
+        <label for="compressionRate">Compression Rate: <span id="compressionLabel">50%</span></label>
+        <input type="range" id="compressionRate" class="slider" min="1" max="100" value="50">
+        <button onclick="compressFile()" class="button">Compress File</button>
+        <a download id="downloadLink" class="download-link">Download Compressed File</a>
+    </div>
+</div>
+
+<script>
+// The JavaScript for compression should be expanded to include handling for MP3s and other file types
+// For now, this is a placeholder to handle image compression which can be tested directly in the browser
+function compressFile() {
+    const fileInput = document.getElementById('fileInput');
+    const compressionRate = document.getElementById('compressionRate').value;
+    const downloadLink = document.getElementById('downloadLink');
+
+    if (!fileInput.files.length) {
+        alert("Please select a file.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    if (file.type.match('image.*')) {
+        compressImage(file, compressionRate);
+    } else {
+        alert("File type not supported for compression.");
+    }
+}
+
+function compressImage(file, compressionRate) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            const elem = document.createElement('canvas');
+            const scaleFactor = compressionRate / 100;
+            elem.width = img.width * scaleFactor;
+            elem.height = img.height * scaleFactor;
+            const ctx = elem.getContext('2d');
+            ctx.drawImage(img, 0, 0, elem.width, elem.height);
+            ctx.canvas.toBlob((blob) => {
+                const newFile = new File([blob], "compressed_" + file.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+                const url = URL.createObjectURL(newFile);
+                downloadLink.href = url;
+                downloadLink.download = newFile.name;
+                downloadLink.innerHTML = "Download " + newFile.name;
+                downloadLink.style.display = 'block';
+            }, 'image/jpeg', 1);
+        }
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+document.getElementById('compressionRate').oninput = function() {
+    document.getElementById('compressionLabel').textContent = this.value + '%';
+}
+</script>
+</body>
+</html>

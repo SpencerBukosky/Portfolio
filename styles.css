@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+
+:root {
+    --bg-color: rgba(0, 0, 0, 0.4);  /* Semi-transparent background */
+    --text-color: #fff;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #121212;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Cover the entire screen */
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 100px 50px; /* Adjust based on your actual nav size */
+    box-sizing: border-box;
+}
+
+.grid-item {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+.grid-item img {
+    max-width: 50%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.project-name {
+    margin-top: 10px;
+    font-size: 20pt;
+    font-family: 'Orbitron', sans-serif;
+}
+
+nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 3; /* Ensures nav is above the video */
+    padding: 10px 0;
+    text-align: center;
+    background: none; /* Removing the dark bar */
+}
+
+nav a {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.5em; /* Adjust size as needed */
+    margin: 0 10px; /* Adjust margin for better spacing */
+    background: var(--bg-color); /* Background for individual buttons */
+    padding: 15px 25px; /* Larger padding for a button-like appearance */
+    border-radius: 20px; /* More rounded corners for a button look */
+    display: inline-block; /* Ensure these are aligned correctly */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+nav a:hover {
+    background-color: #ffffff; /* Light background on hover */
+    color: #000000; /* Dark text on hover */
+    text-shadow: none; /* Removing shadow on hover for cleaner text */
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.contact-form button {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: var(--text-color);
+    background: var(--bg-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+
+
+@media (max-width: 768px) {
+    nav a {
+        display: block;
+        margin: 10px auto;
+    }
+}

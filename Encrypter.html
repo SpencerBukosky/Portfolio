@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Encrypt & Decrypt</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    transition: color 0.5s ease;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.grid-item {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+}
+
+.grid-item:hover {
+    transform: translateY(-10px);
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    width: calc(100% - 40px); /* Account for padding and margins */
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+button i {
+    margin-right: 8px;
+}
+
+.encrypted-text {
+    color: #e63946; /* red */
+}
+
+.decrypted-text {
+    color: #2a9d8f; /* green */
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="grid-item">
+        <input type="text" id="message" placeholder="Enter message to encrypt">
+        <button onclick="encrypt()"><i class="fas fa-lock"></i>Encrypt</button>
+        <button onclick="copyText()"><i class="fas fa-copy"></i>Copy</button>
+        <input type="text" id="encrypted" placeholder="Encrypted text appears here..." readonly class="encrypted-text">
+    </div>
+    <div class="grid-item">
+        <button onclick="pasteText()"><i class="fas fa-unlock"></i>Paste & Decrypt</button>
+        <input type="text" id="decrypted" placeholder="Decrypted text appears here..." readonly class="decrypted-text">
+    </div>
+</div>
+
+<script>
+function encode(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+function decode(str) {
+    return decodeURIComponent(escape(atob(str)));
+}
+
+function encrypt() {
+    const input = document.getElementById('message').value;
+    const encrypted = encode(input);
+    const encryptedInput = document.getElementById('encrypted');
+    encryptedInput.value = encrypted;
+    encryptedInput.classList.add('encrypted-text');
+}
+
+function copyText() {
+    const text = document.getElementById('encrypted');
+    text.select();
+    document.execCommand('copy');
+}
+
+function pasteText() {
+    navigator.clipboard.readText().then(clipText => {
+        document.getElementById('encrypted').value = clipText;
+        decrypt();
+    });
+}
+
+function decrypt() {
+    const input = document.getElementById('encrypted').value;
+    const decrypted = decode(input);
+    const decryptedInput = document.getElementById('decrypted');
+    decryptedInput.value = decrypted;
+    decryptedInput.classList.add('decrypted-text');
+}
+</script>
+</body>
+</html>
